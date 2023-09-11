@@ -49,7 +49,7 @@ public class CompanyController {
         }
 
         Company company = this.companyService.save(ticker);
-//        this.companyService.addAutocompleteKeyword(company.getName());
+        this.companyService.addAutocompleteKeyword(company.getName());
 
         return ResponseEntity.ok(company);
 
