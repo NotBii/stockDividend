@@ -1,9 +1,11 @@
 package com.zerobase.stock.web;
 
 import com.zerobase.stock.model.Company;
+import com.zerobase.stock.model.constants.CacheKey;
 import com.zerobase.stock.persist.entity.CompanyEntity;
 import com.zerobase.stock.service.CompanyService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.*;
 public class CompanyController {
 
     private final CompanyService companyService;
+    private final CacheManager redisCacheManager;
 
     @GetMapping("/autocomplete")
     public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
@@ -52,8 +55,15 @@ public class CompanyController {
 
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteCompany() {
-        return null;
+    @DeleteMapping("/{ticker}")
+    @PreAuthorize("hasRole('WIRTE')")
+    public ResponseEntity<?> deleteCompany(@PathVariable String ticker) {
+        String companyName = this.companyService.deleteCompany(ticker);
+        this.clearFinanaceCache(companyName);
+        return ResponseEntity.ok(companyName);
+    }
+
+    public void clearFinanaceCache(String companyName) {
+        this.redisCacheManager.getCache(CacheKey.KEY_FINANCE).evict(companyName);
     }
 }
