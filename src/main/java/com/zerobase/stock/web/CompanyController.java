@@ -5,6 +5,7 @@ import com.zerobase.stock.model.constants.CacheKey;
 import com.zerobase.stock.persist.entity.CompanyEntity;
 import com.zerobase.stock.service.CompanyService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/company")
 @AllArgsConstructor
@@ -50,7 +52,7 @@ public class CompanyController {
 
         Company company = this.companyService.save(ticker);
         this.companyService.addAutocompleteKeyword(company.getName());
-
+        log.info("add company -> " + company.getName());
         return ResponseEntity.ok(company);
 
     }
@@ -60,10 +62,12 @@ public class CompanyController {
     public ResponseEntity<?> deleteCompany(@PathVariable String ticker) {
         String companyName = this.companyService.deleteCompany(ticker);
         this.clearFinanaceCache(companyName);
+        log.info("deleted company -> " + companyName);
         return ResponseEntity.ok(companyName);
     }
 
     public void clearFinanaceCache(String companyName) {
         this.redisCacheManager.getCache(CacheKey.KEY_FINANCE).evict(companyName);
+        log.info("clear cache -> " + companyName);
     }
 }
