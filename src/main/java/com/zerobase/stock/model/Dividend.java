@@ -1,14 +1,17 @@
 package com.zerobase.stock.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Dividend {
 
     private LocalDateTime date;
     private String dividend;
+
 }

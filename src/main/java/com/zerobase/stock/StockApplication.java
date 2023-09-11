@@ -3,6 +3,8 @@ package com.zerobase.stock;
 import com.zerobase.stock.model.Company;
 import com.zerobase.stock.scrapper.Scraper;
 import com.zerobase.stock.scrapper.YahooFinanceScraper;
+import org.apache.commons.collections4.Trie;
+import org.apache.commons.collections4.trie.PatriciaTrie;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,5 +21,4 @@ public class StockApplication {
     public static void main(String[] args) {
         SpringApplication.run(StockApplication.class, args);
     }
-
 }

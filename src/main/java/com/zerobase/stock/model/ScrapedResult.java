@@ -1,12 +1,13 @@
 package com.zerobase.stock.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.util.*;
 
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class ScrapedResult {
 
@@ -14,5 +15,5 @@ public class ScrapedResult {
 
     private List<Dividend> dividends;
 
-    public ScrapedResult() {this.dividends = new ArrayList<>();}
+
 }
